@@ -46,14 +46,11 @@ pipeline {
         }
            
   stage('Deploy') {
-            steps {
-                // Deploy to Kubernetes
-                script {
-                    withKubeConfig([credentialsId: 'kubernetes-config']) {
-                        sh 'kubectl apply -f minikube-deployment.yaml' // Apply your Kubernetes manifests
+            steps {                     
+                        withKubeConfig([credentialsId: 'kubeconfig']) {
+                        sh 'kubectl apply -f minikube-deployment.yaml' 
                     }
                 }
             }
         }
-            }
 }
