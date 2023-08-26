@@ -39,30 +39,19 @@ pipeline {
        stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t $ECR_REPO/$REPO_NAME:latest .'
+                    sh 'docker build -t stlucky3/devops:latest .'
                 }
             }
         }
            
-        stage('Push to ECR') {
-            steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "aws-credentials-id",
-    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]) {
-                    sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REPO"
-                    sh "docker push $ECR_REPO/$REPO_NAME:latest"
-                }
-		}	
+        stage('Deploy to Local Minikube Cluster') {
+    steps {
+        withCredentials([
+            string(credentialsId: 'kubernetes', variable: 'api_token')
+            ]) {
+             sh 'kubectl --token $api_token --server https://192.168.49.2:8443 --insecure-skip-tls-verify=true apply -f minikube-deployment.yaml '
+               }
             }
-	    stage('Deploy to EKS Cluster') {
-            steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "aws-credentials-id",
-    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]) {
-                    sh "aws eks update-kubeconfig --region us-east-1 --name $EKS_CLUSTER"
-                    sh 'kubectl apply -f kubernetes-manifest.yaml'
-                }
-            }
-        }
+           }
             }
 }
