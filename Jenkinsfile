@@ -40,12 +40,14 @@ pipeline {
             }
         }
            
-  stage('Deploy') {
-            steps {                     
-                        withKubeConfig([credentialsId: 'kubeconfig']) {
-                        sh 'kubectl apply -f minikube-deployment.yaml' 
-                    }
-                }
-            }
+  stage('Deploy to Local Kubernetes') {
+            steps {
+                script {
+		    kubeconfig(caCertificate: 'C:\\Users\\emb-shaitan\\Downloads\\ca.crt', credentialsId: 'kubeconfig', serverUrl: 'https://192.168.49.2:8443') {
+                    sh 'kubectl apply -f minikube-deployment.yaml'
+                           } 
+		 }
+		}
+	    }
         }
 }
