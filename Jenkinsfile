@@ -47,7 +47,7 @@ pipeline {
         stage('Deploy to Local Minikube Cluster') {
     steps {
         withCredentials([
-            string(credentialsId: 'kubernetes', variable: 'api_token')
+            string(credentialsId: 'minikube-config', variable: 'api_token')
             ]) {
              sh 'kubectl --token $api_token --server https://192.168.49.2:8443 --insecure-skip-tls-verify=true apply -f minikube-deployment.yaml '
                }
