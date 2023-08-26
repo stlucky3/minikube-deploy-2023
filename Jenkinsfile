@@ -3,6 +3,7 @@ pipeline {
     environment {
         SONAR_URL = 'http://192.168.0.113:9000'
         NEXUS_URL = 'http://192.168.0.113:8081'
+	KUBE_CONFIG = credentials('kubernetes-config')
         ECR_REPO = '981687212131.dkr.ecr.us-east-1.amazonaws.com' 
         REPO_NAME = 'embitel-ecr'
 	    region = 'us-east-1'
