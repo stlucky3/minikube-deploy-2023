@@ -60,6 +60,7 @@ stage('Push Docker image to docker hosted rerpository on Nexus') {
 		    kubeconfig(caCertificate: 'C:\\Users\\emb-shaitan\\Downloads\\ca.crt', credentialsId: 'kubeconfig', serverUrl: 'https://192.168.49.2:8443') {
                     sh 'kubectl apply -f minikube-deployment.yaml'
                            } 
+		    }   
 		 }
 		}
 	    }
