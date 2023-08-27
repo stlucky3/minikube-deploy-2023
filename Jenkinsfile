@@ -35,7 +35,7 @@ pipeline {
        stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t stlucky3/devops:latest .'
+                    sh 'docker build -t 192.168.0.113:8083/dockerhosted-repo:latest .'
                 }
             }
         }
