@@ -35,7 +35,7 @@ pipeline {
        stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t 192.168.0.113:8082/dockerhosted-repo:latest .'
+                    sh 'docker build -t 192.168.0.113:8082/dockerhosted-repo/emb2023:latest .'
                 }
             }
         }
@@ -45,7 +45,7 @@ stage('Push Docker image to docker hosted rerpository on Nexus') {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
                     sh "echo ${PSW} | docker login -u ${USER} --password-stdin 192.168.0.113:8082/repository/dockerhosted-repo/"
-                    sh "docker push 192.168.0.113:8082/dockerhosted-repo:latest"
+                    sh "docker push 192.168.0.113:8082/dockerhosted-repo/emb2023:latest"
                      }
                 }
             }
