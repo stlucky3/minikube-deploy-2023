@@ -46,6 +46,7 @@ stage('Push Docker image to docker hosted rerpository on Nexus') {
                     withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
                     sh "echo ${PSW} | docker login -u ${USER} --password-stdin 192.168.0.113:8082/repository/dockerhosted-repo/"
                     sh "docker push 192.168.0.113:8082/dockerhosted-repo/emb2023:latest"
+		    sh "minikube cache add 192.168.0.113:8082/dockerhosted-repo/emb2023:latest"    
                      }
                 }
             }
@@ -53,11 +54,7 @@ stage('Push Docker image to docker hosted rerpository on Nexus') {
 	    
   stage('Deploy to Local Kubernetes') {
             steps {
-                script {
-		    withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'PSW', usernameVariable: 'USER')]){
-                    sh "echo ${PSW} | docker login -u ${USER} --password-stdin 192.168.0.113:8082/repository/dockerhosted-repo/"
-                    sh "docker pull 192.168.0.113:8082/dockerhosted-repo/emb2023:latest"
-		    kubeconfig(caCertificate: 'C:\\Users\\emb-shaitan\\Downloads\\ca.crt', credentialsId: 'kubeconfig', serverUrl: 'https://192.168.49.2:8443') {
+                    kubeconfig(caCertificate: 'C:\\Users\\emb-shaitan\\Downloads\\ca.crt', credentialsId: 'kubeconfig', serverUrl: 'https://192.168.49.2:8443') {
                     sh 'kubectl apply -f minikube-deployment.yaml'
                            } 
 		    }   
