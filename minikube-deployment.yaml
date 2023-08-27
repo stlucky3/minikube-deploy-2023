@@ -17,7 +17,7 @@ spec:
       containers:
       - name: hello
         image: "192.168.0.113:8082/dockerhosted-repo/emb2023:latest"
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Never
         ports:
           - containerPort: 8080
       imagePullSecrets:
