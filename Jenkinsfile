@@ -58,8 +58,6 @@ stage('Push Docker image to docker hosted rerpository on Nexus') {
 		    sh 'kubectl apply -f minikube-deployment.yaml'
                            } 
 		    }   
-		 }
-		}
-	    }
+		 }	
         }
 }
